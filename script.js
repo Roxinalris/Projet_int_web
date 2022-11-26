@@ -160,6 +160,8 @@ function start(){
         croix.setAttribute('href','#cross');
         croix.setAttribute('width', 50);
         croix.setAttribute('height', 50);
+        croix.setAttribute('id', x);
+        //croix.setAttribute 
         croix.setAttribute('transform', `translate(${posi[x]})`)
         console.log("posi : ", posi[x])
         groupeCroix.appendChild(croix);
@@ -170,8 +172,28 @@ function start(){
         cercle.setAttribute('href','#cir');
         cercle.setAttribute('width', 50);
         cercle.setAttribute('height', 100);
+        cercle.setAttribute('id', x);
         cercle.setAttribute('transform', `translate(${posi[x]})`)
         groupeCercle.appendChild(cercle);
+    }
+
+    function isWhin(x, v){
+       var cc;
+        if (v ==1){
+            cc = '#cross';
+        } else {
+            cc = '#cir';
+        }
+        var i = 0 
+        document.querySelectorAll(`use[href= ${cc}]`).forEach(element => {       
+                
+       
+                var winKey,[i] = element.target.attributes.id.value
+                
+        
+                i = i +1;
+        
+        })
     }
 
 
