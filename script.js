@@ -11,6 +11,7 @@ function start(){
     monSVG.width ='800px';
     monSVG.height = '800px';
     monSVG.viewBox = "0 0 800 800";
+    monSVG.setAttribute("id", "Elsvg");
     monSVG.getAttribute("viewBox", "0 0 800 800");
 
     console.log(monSVG.width);
@@ -125,7 +126,11 @@ function start(){
     groupecar.setAttribute('id','cr9');
     monSVG.appendChild(groupecar);
 
-    // for affiche la grille de départ 
+    
+
+
+
+    // for qui affiche la grille de départ 
    let posi = ["0 0", "50 0", "100 0","0 50", "50 50", "100 50","0 100", "50 100", "100 100"];
 
 
@@ -141,34 +146,38 @@ function start(){
         monGroupe.appendChild(uses);
     }
 
-    // regarde quelle case est cliquer  pour pouvoir placer un rond ou une croix 
+    // regarde quelle case est cliquée pour pouvoir placer un rond ou une croix 
+
     var turn = 0;
+
     document.querySelectorAll("use[href='#car']").forEach(element => {       
                 
         element.addEventListener("click", e => {
             
             var x = e.target.attributes.id.value;
             if(whoTurn(turn) == 1){
-                
-                console.log("croix : " , x)
-                
+
                 croix(x);
                 isWhin(turn);
+
             }else if (whoTurn(turn) == 0){
+
                 cercle(x);
                 isWhin(turn);
-                console.log("rond : " , x);
-             
+ 
             }
-            console.log("posit : ", posiT);
-            //regarde si il y a match null
-            
-            turn = turn + 1 ;
+
+            //console.log("posit : ", posiT);
+           turn = turn + 1 ;
             
         })
     
             
     })
+  
+  
+
+
    
     var posiT  = [];
     for(var i = 0; i < 9; i++){
@@ -242,11 +251,11 @@ function start(){
             pos3 = posiel+6;
             itsWin(elWinnor, posiel, pos2, pos3);
         } 
-        if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
-            pos2 = posiel+1;
-            pos3 = posiel+2;
-            itsWin(elWinnor, posiel, pos2, pos3);
-        }
+        // if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
+        //     pos2 = posiel+1;
+        //     pos3 = posiel+2;
+        //     itsWin(elWinnor, posiel, pos2, pos3);
+        // }
     
         elWinnor = posiT[2];
         var posiel  = 2;
@@ -280,10 +289,11 @@ function start(){
             itsWin(elWinnor, posiel, pos2, pos3);
         }
     
-    
+        //regarde si il y a match null
         if (turn == 8){
            
             win.innerText = "Match nul";
+         
             
         }
     
@@ -295,30 +305,51 @@ function start(){
                 if (i ==  posiel || i == pos2 || i == pos3){
     
                 }else {
-                    carr(i)
+                    carr(i);
+
                 }
                 
                 
                 
+                
             }
+           
         }else if(elWinnor == 1){
             win.innerText = "Les ronds gagnent";
             for(var i = 0; i < 9; i++){
                 if (i ==  posiel || i == pos2 || i == pos3){
     
                 }else {
-                    carr(i)
+                    carr(i);
                 }
                 
                 
                 
             }
+          
         }
-
+        
        
     }
 
 }
+// var wc = 0;
+// var wcr = 0;
+function restart(){
+    var monInput = document.getElementById('Elsvg');
+    monInput.parentNode.removeChild(monInput);
+   
+    // if (document.getElementById("theWinner").innerText == "Les ronds gagnent"){
+    //     document.getElementById("circle").innerText = wc + 1;
+    // }else if(document.getElementById("theWinner").innerText == "Les croix gagnent"){
+    //     document.getElementById("cross").innerText = wcr + 1;
+    // }
+    document.getElementById("theWinner").innerText = " ";
+
+
+    start();
+}
+
 
 function whoTurn(turn){
     return turn % 2;
