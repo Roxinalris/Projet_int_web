@@ -1,7 +1,10 @@
 
 window.addEventListener("load",start);
 
+
 function start(){
+    const win = document.getElementById("theWinner");
+    
     var monSVG = document.createElementNS("http://www.w3.org/2000/svg",'svg');
 
   
@@ -116,9 +119,13 @@ function start(){
     var groupeCercle = document.createElementNS("http://www.w3.org/2000/svg", 'g');
     groupeCercle.setAttribute('id', 'cr8');
     
-    monSVG.appendChild(groupeCercle)
+    monSVG.appendChild(groupeCercle);
 
-// for affiche la grille de départ 
+    var groupecar = document.createElementNS("http://www.w3.org/2000/svg",'g');
+    groupecar.setAttribute('id','cr9');
+    monSVG.appendChild(groupecar);
+
+    // for affiche la grille de départ 
    let posi = ["0 0", "50 0", "100 0","0 50", "50 50", "100 50","0 100", "50 100", "100 100"];
 
 
@@ -134,28 +141,42 @@ function start(){
         monGroupe.appendChild(uses);
     }
 
-// regarde quelle case est cliquer  pour pouvoir placer un rond ou une croix 
+    // regarde quelle case est cliquer  pour pouvoir placer un rond ou une croix 
     var turn = 0;
     document.querySelectorAll("use[href='#car']").forEach(element => {       
                 
         element.addEventListener("click", e => {
-            turn = turn + 1 ;
+            
             var x = e.target.attributes.id.value;
             if(whoTurn(turn) == 1){
                 
                 console.log("croix : " , x)
+                
                 croix(x);
+                isWhin(turn);
             }else if (whoTurn(turn) == 0){
                 cercle(x);
-                console.log("rond : " , x)
+                isWhin(turn);
+                console.log("rond : " , x);
+             
             }
+            console.log("posit : ", posiT);
+            //regarde si il y a match null
             
-    
+            turn = turn + 1 ;
             
         })
+    
+            
     })
+   
+    var posiT  = [];
+    for(var i = 0; i < 9; i++){
+        posiT[i] = 0;
+    }
     //place une croix a l'emplacement x 
     function croix(x){
+        posiT[x] = 2; 
         var croix = document.createElementNS("http://www.w3.org/2000/svg", 'use');
         croix.setAttribute('href','#cross');
         croix.setAttribute('width', 50);
@@ -163,44 +184,144 @@ function start(){
         croix.setAttribute('id', x);
         //croix.setAttribute 
         croix.setAttribute('transform', `translate(${posi[x]})`)
-        console.log("posi : ", posi[x])
+     
         groupeCroix.appendChild(croix);
+        
+        
     }
     //place un cercle a l'emplacement x 
     function cercle(x){
+        posiT[x] = 1;
         var cercle = document.createElementNS("http://www.w3.org/2000/svg", 'use');
         cercle.setAttribute('href','#cir');
         cercle.setAttribute('width', 50);
-        cercle.setAttribute('height', 100);
+        cercle.setAttribute('height', 50);
         cercle.setAttribute('id', x);
         cercle.setAttribute('transform', `translate(${posi[x]})`)
         groupeCercle.appendChild(cercle);
+    
+         
     }
 
-    function isWhin(x, v){
-       var cc;
-        if (v ==1){
-            cc = '#cross';
-        } else {
-            cc = '#cir';
+    function carr(x){
+        var carrer = document.createElementNS("http://www.w3.org/2000/svg", 'use');
+        carrer.setAttribute('href', '#car');
+        carrer.setAttribute('width', 50);
+        carrer.setAttribute('height', 50);
+        carrer.setAttribute('transform', `translate(${posi[x]})`)
+        groupecar.appendChild(carrer);
+
+    }
+    function isWhin(turn){
+        var elWinnor = posiT[0];
+        var posiel  = 0 ;
+        var pos2;
+        var pos3;
+   
+        if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
+            pos2 = posiel+1;
+            pos3 = posiel+2;            
+            itsWin(elWinnor, posiel, pos2, pos3);
         }
-        var i = 0 
-        document.querySelectorAll(`use[href= ${cc}]`).forEach(element => {       
-                
+        if(elWinnor == posiT[posiel+3] && elWinnor == posiT[posiel+6]){
+            pos2 = posiel+3;
+            pos3 = posiel+6;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+        if(elWinnor == posiT[posiel+4] && elWinnor == posiT[posiel+8]){
+            pos2 = posiel+4;
+            pos3 = posiel+8;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+    
+        elWinnor = posiT[1];
+        var posiel  = 1; 
+    
+        if(elWinnor == posiT[posiel+3] && elWinnor == posiT[posiel+6]){
+            pos2 = posiel+3;
+            pos3 = posiel+6;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        } 
+        if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
+            pos2 = posiel+1;
+            pos3 = posiel+2;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+    
+        elWinnor = posiT[2];
+        var posiel  = 2;
+    
+        if(elWinnor == posiT[posiel+2] && elWinnor == posiT[posiel+4]){
+            pos2 = posiel+2;
+            pos3 = posiel+4;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+        if(elWinnor == posiT[posiel+3] && elWinnor == posiT[posiel+6]){
+            pos2 = posiel+3;
+            pos3 = posiel+6;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+    
+        elWinnor = posiT[3];
+        var posiel  = 3;
        
-                var winKey,[i] = element.target.attributes.id.value
-                
-        
-                i = i +1;
-        
-        })
+        if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
+            pos2 = posiel+1;
+            pos3 = posiel+2;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+    
+        elWinnor = posiT[6];
+        var posiel  = 6;
+    
+        if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
+            pos2 = posiel+1;
+            pos3 = posiel+2;
+            itsWin(elWinnor, posiel, pos2, pos3);
+        }
+    
+    
+        if (turn == 8){
+           
+            win.innerText = "Match nul";
+            
+        }
+    
     }
+    function itsWin(elWinnor, posiel, pos2, pos3){
+        if(elWinnor == 2){
+            win.innerText = "Les croix gagnent ";
+            for(var i = 0; i < 9; i++){
+                if (i ==  posiel || i == pos2 || i == pos3){
+    
+                }else {
+                    carr(i)
+                }
+                
+                
+                
+            }
+        }else if(elWinnor == 1){
+            win.innerText = "Les ronds gagnent";
+            for(var i = 0; i < 9; i++){
+                if (i ==  posiel || i == pos2 || i == pos3){
+    
+                }else {
+                    carr(i)
+                }
+                
+                
+                
+            }
+        }
 
+       
+    }
 
 }
 
 function whoTurn(turn){
-    return turn % 2 ;
+    return turn % 2;
 }
 
 
