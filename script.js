@@ -1,16 +1,18 @@
 
+//appelle la fonction start au chargement de la page 
 window.addEventListener("load",start);
 
-
+var wc = 0;
+var wcr = 0;
 function start(){
     const win = document.getElementById("theWinner");
-    
+    //------fait et place le svg sur l'ecran-----------------------------------
     var monSVG = document.createElementNS("http://www.w3.org/2000/svg",'svg');
 
   
-    monSVG.width ='800px';
-    monSVG.height = '800px';
-    monSVG.viewBox = "0 0 800 800";
+    monSVG.setAttribute('width', 150);
+    monSVG.setAttribute('height', 150);
+ 
     monSVG.setAttribute("id", "Elsvg");
     monSVG.getAttribute("viewBox", "0 0 800 800");
 
@@ -27,7 +29,7 @@ function start(){
     monSymbole.setAttribute('id', 'car');
     monSVG.appendChild(monSymbole);
 
-
+    
     var myCross = document.createElementNS("http://www.w3.org/2000/svg", 'symbol');
   
     myCross.setAttribute('id', 'cross');
@@ -146,10 +148,10 @@ function start(){
         monGroupe.appendChild(uses);
     }
 
-    // regarde quelle case est cliquée pour pouvoir placer un rond ou une croix 
+    // regarde quelle case est cliquée pour pouvoir placer un rond ou une croix en fonction du tour 
 
     var turn = 0;
-
+ 
     document.querySelectorAll("use[href='#car']").forEach(element => {       
                 
         element.addEventListener("click", e => {
@@ -211,7 +213,7 @@ function start(){
     
          
     }
-
+    //place un carrer a la position x
     function carr(x){
         var carrer = document.createElementNS("http://www.w3.org/2000/svg", 'use');
         carrer.setAttribute('href', '#car');
@@ -221,6 +223,7 @@ function start(){
         groupecar.appendChild(carrer);
 
     }
+    //vérifie chaque possibilité de victoire 
     function isWhin(turn){
         var elWinnor = posiT[0];
         var posiel  = 0 ;
@@ -298,6 +301,8 @@ function start(){
         }
     
     }
+
+    //permet que lorsque la partie est gagné de placer des carrer blanc sur les case non gagnante afin que plus rien ne soit clicable 
     function itsWin(elWinnor, posiel, pos2, pos3){
         if(elWinnor == 2){
             win.innerText = "Les croix gagnent ";
@@ -328,22 +333,38 @@ function start(){
             }
           
         }
+
+
         
        
     }
 
+    //permet de mettre tout le contenue au centre de la page 
+    var thebody = document.getElementById('body');
+    thebody.style.textAlign = 'center';
+    var thediv = document.getElementById('thediv');
+    thediv.style.textAlign = 'center';
+
+
+    let img = new Image();   // Crée un nouvel élément img
+    img.src = 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg';
+
+
+
+
 }
-// var wc = 0;
-// var wcr = 0;
+//fonction restart nous sert a redermarer la partie en suppriment le svg en cour pour en refaire un avec un call a la fonction start
 function restart(){
     var monInput = document.getElementById('Elsvg');
     monInput.parentNode.removeChild(monInput);
-   
-    // if (document.getElementById("theWinner").innerText == "Les ronds gagnent"){
-    //     document.getElementById("circle").innerText = wc + 1;
-    // }else if(document.getElementById("theWinner").innerText == "Les croix gagnent"){
-    //     document.getElementById("cross").innerText = wcr + 1;
-    // }
+    
+    if (document.getElementById("theWinner").innerText == "Les ronds gagnent"){
+        wc = wc + 1 
+        document.getElementById("ccircle").innerText = wc;
+    }else if(document.getElementById("theWinner").innerText == "Les croix gagnent"){
+        wcr = wcr + 1 
+        document.getElementById("ccross").innerText = wcr;
+    }
     document.getElementById("theWinner").innerText = " ";
 
 
@@ -351,9 +372,17 @@ function restart(){
 }
 
 
+
+//whoTurn permet de savoir avec un modulo 2 a qui est le tour revois 0 ou 1
 function whoTurn(turn){
     return turn % 2;
 }
+
+
+
+
+
+
 
 
 
