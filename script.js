@@ -4,11 +4,12 @@ window.addEventListener("load",start);
 
 var wc = 0;
 var wcr = 0;
+var nu;
 function start(){
     const win = document.getElementById("theWinner");
     //------fait et place le svg sur l'ecran-----------------------------------
     var monSVG = document.createElementNS("http://www.w3.org/2000/svg",'svg');
-
+    nu = 0;
   
     monSVG.setAttribute('width', 150);
     monSVG.setAttribute('height', 150);
@@ -16,8 +17,8 @@ function start(){
     monSVG.setAttribute("id", "Elsvg");
     monSVG.getAttribute("viewBox", "0 0 800 800");
 
-    console.log(monSVG.width);
-    console.log(monSVG);
+    // console.log(monSVG.width);
+    // console.log(monSVG);
     
 
     var conteneur = document.getElementById("body");
@@ -213,18 +214,19 @@ function start(){
     
          
     }
-    //place un carrer a la position x
+    //place un carré a la position x
     function carr(x){
-        var carrer = document.createElementNS("http://www.w3.org/2000/svg", 'use');
-        carrer.setAttribute('href', '#car');
-        carrer.setAttribute('width', 50);
-        carrer.setAttribute('height', 50);
-        carrer.setAttribute('transform', `translate(${posi[x]})`)
-        groupecar.appendChild(carrer);
+        var carre = document.createElementNS("http://www.w3.org/2000/svg", 'use');
+        carre.setAttribute('href', '#car');
+        carre.setAttribute('width', 50);
+        carre.setAttribute('height', 50);
+        carre.setAttribute('transform', `translate(${posi[x]})`)
+        groupecar.appendChild(carre);
 
     }
     //vérifie chaque possibilité de victoire 
-    function isWhin(turn){
+
+    function isWhin(){
         var elWinnor = posiT[0];
         var posiel  = 0 ;
         var pos2;
@@ -253,13 +255,7 @@ function start(){
             pos2 = posiel+3;
             pos3 = posiel+6;
             itsWin(elWinnor, posiel, pos2, pos3);
-        } 
-        // if(elWinnor == posiT[posiel+1] && elWinnor == posiT[posiel+2]){
-        //     pos2 = posiel+1;
-        //     pos3 = posiel+2;
-        //     itsWin(elWinnor, posiel, pos2, pos3);
-        // }
-    
+        }    
         elWinnor = posiT[2];
         var posiel  = 2;
     
@@ -293,16 +289,27 @@ function start(){
         }
     
         //regarde si il y a match null
+        
+        isnul();
+    
+    }
+  
+    function isnul(){
+        
         if (turn == 8){
-           
+            //évite qu'un match nul soit déclarer par erreur 
+            if (nu == 0){
+                
+              
+                nu = 1
+                isWhin();
+            }
             win.innerText = "Match nul";
          
             
         }
-    
     }
-
-    //permet que lorsque la partie est gagné de placer des carrer blanc sur les case non gagnante afin que plus rien ne soit clicable 
+    //permet que lorsque la partie est gagné de placer des carre blanc sur les case non gagnante afin que plus rien ne soit clicable 
     function itsWin(elWinnor, posiel, pos2, pos3){
         if(elWinnor == 2){
             win.innerText = "Les croix gagnent ";
@@ -313,10 +320,7 @@ function start(){
                     carr(i);
 
                 }
-                
-                
-                
-                
+               
             }
            
         }else if(elWinnor == 1){
@@ -327,15 +331,11 @@ function start(){
                 }else {
                     carr(i);
                 }
-                
-                
-                
+               
             }
           
         }
-
-
-        
+       
        
     }
 
@@ -346,8 +346,7 @@ function start(){
     thediv.style.textAlign = 'center';
 
 
-    let img = new Image();   // Crée un nouvel élément img
-    img.src = 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg';
+ 
 
 
 
@@ -367,13 +366,15 @@ function restart(){
     }
     document.getElementById("theWinner").innerText = " ";
 
+    nu = 0 
+
 
     start();
 }
 
 
 
-//whoTurn permet de savoir avec un modulo 2 a qui est le tour revois 0 ou 1
+//whoTurn permet de savoir avec un modulo 2 a qui est le tour renvoie 0 ou 1
 function whoTurn(turn){
     return turn % 2;
 }
